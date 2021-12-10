@@ -5,7 +5,7 @@
 <p>Description: <%=@application.description%></p>
 <p>Pets being applied for:</p>
   <%@application.pets.each do |pet|%>
-    <p><a href="/pets/pet.id"><%= pet.name %></a></p>
+    <p><%= link_to "#{pet.name}", "pets/#{pet.id}" %></p>
   <% end %>
 
 <h2>Application Status: <%=@application.status%></h2>

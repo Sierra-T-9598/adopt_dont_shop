@@ -39,7 +39,6 @@ RSpec.describe 'Application Show Page' do
       expect(page).to have_content(@pet_2.name)
       expect(page).to_not have_content(@pet_3.name)
       expect(page).to_not have_content(@pet_4.name)
-      save_and_open_page
     end
 
     it 'links each pet on the application to its show page' do
