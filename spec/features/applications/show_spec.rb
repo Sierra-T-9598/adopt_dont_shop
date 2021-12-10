@@ -9,7 +9,7 @@ RSpec.describe 'Application Show Page' do
       @pet_3 = Pet.create!(adoptable: true, age: 7, breed: 'chicken', name: 'Rusty', shelter_id: @shelter.id)
       @pet_4= Pet.create!(adoptable: true, age: 2, breed: 'dalmatian', name: 'Spot', shelter_id: @shelter.id)
       @application_1 = @pet_1.applications.create!(applicant_name: 'Jenny Q', street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Great backyard!', status: 'In Progress')
-      @application_1 = @pet_2.applications.create!(applicant_name: 'Jenny Q', street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Great backyard!', status: 'In Progress')
+      @application_1.pets << @pet_2
       @application_2 = @pet_1.applications.create!(applicant_name: 'Maximus G', street_address: '13 Tulip Ave', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Work from home.', status: 'In Progress')
       @application_3 = @pet_2.applications.create!(applicant_name: 'Gerald F', street_address: '1775 Spencer Street', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Dog lover.', status: 'In Progress')
       visit "/applications/#{@application_1.id}"
@@ -27,9 +27,6 @@ RSpec.describe 'Application Show Page' do
       expect(page).to have_content(@application_1.zip_code)
 
       expect(page).to_not have_content(@application_2.street_address)
-      expect(page).to_not have_content(@application_2.city)
-      expect(page).to_not have_content(@application_2.state)
-      expect(page).to_not have_content(@application_2.zip_code)
     end
 
     it 'has a description for why the applicant says they are a good home' do
@@ -42,6 +39,7 @@ RSpec.describe 'Application Show Page' do
       expect(page).to have_content(@pet_2.name)
       expect(page).to_not have_content(@pet_3.name)
       expect(page).to_not have_content(@pet_4.name)
+      save_and_open_page
     end
 
     it 'links each pet on the application to its show page' do
