@@ -25,7 +25,7 @@ RSpec.describe 'New Application Page', type: :feature do
           fill_in(:state, with: 'Colorado')
           fill_in(:zip_code, with: '80944')
 
-          click_on('Submit')
+          click_button('Submit')
 
           expect(current_path).to eq("/applications/#{Application.last.id}")
           expect(page).to have_content("George")
@@ -33,6 +33,16 @@ RSpec.describe 'New Application Page', type: :feature do
           expect(page).to have_content('Westminister')
           expect(page).to have_content('Colorado')
           expect(page).to have_content('80944')
+        end
+      end
+
+      describe 'invalid application' do
+        it 'flashes an error message that fields are incomplete and stays on same page' do
+          visit '/applications/new'
+
+          click_button('Submit')
+
+          expect(page).to have_content("Error: Applicant name can't be blank, Street address can't be blank, City can't be blank, State can't be blank, Zip code can't be blank")
         end
       end
     end
