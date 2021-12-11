@@ -7,7 +7,8 @@ RSpec.describe 'Application Show Page' do
       @pet_1 = Pet.create!(adoptable: true, age: 1, breed: 'sphynx', name: 'Lucille Bald', shelter_id: @shelter.id)
       @pet_2 = Pet.create!(adoptable: true, age: 3, breed: 'doberman', name: 'Lobster', shelter_id: @shelter.id)
       @pet_3 = Pet.create!(adoptable: true, age: 7, breed: 'chicken', name: 'Rusty', shelter_id: @shelter.id)
-      @pet_4= Pet.create!(adoptable: true, age: 2, breed: 'dalmatian', name: 'Spot', shelter_id: @shelter.id)
+      @pet_4 = Pet.create!(adoptable: true, age: 2, breed: 'dalmatian', name: 'Spot', shelter_id: @shelter.id)
+      @pet_8 = Pet.create!(adoptable: true, age: 2, breed: 'kitten', name: 'Benny', shelter_id: @shelter.id)
       @application_1 = @pet_1.applications.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Great backyard!', status: 'In Progress')
       @application_1.pets << @pet_2
       @application_2 = @pet_1.applications.create!(applicant_name: 'Maximus G', street_address: '13 Tulip Ave', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Work from home.', status: 'In Progress')
@@ -50,11 +51,11 @@ RSpec.describe 'Application Show Page' do
       expect(page).to have_content(@application_1.status)
     end
 
-  describe 'searching fo pets for an application' do
+  describe 'searching for pets for an application' do
       describe 'an application that has not been submitted' do
         it 'has a search box to search for pet by name' do
           click_button 'Submit'
-          
+
           expect(page).to have_button('Submit')
         end
 
@@ -63,6 +64,25 @@ RSpec.describe 'Application Show Page' do
           click_button 'Submit'
 
           expect(page).to have_content(@pet_1.name)
+        end
+      end
+    end
+
+    describe 'adding a pet to an application' do
+      describe 'search for pet by name' do
+        it 'has a button to adopt the pet' do
+          fill_in :search, with: "#{@pet_1.name}"
+          click_button 'Submit'
+
+          expect(page).to have_button("Adopt #{@pet_1.name}")
+        end
+
+        it 'can list the pets wanted for adoption' do
+          fill_in :search, with: "#{@pet_8.name}"
+          click_button 'Submit'
+          click_button "Adopt #{@pet_8.name}"
+
+          expect(page).to have_content(@pet_8.name)
         end
       end
     end
