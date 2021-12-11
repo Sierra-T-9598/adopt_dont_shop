@@ -49,5 +49,22 @@ RSpec.describe 'Application Show Page' do
     it 'displays the application status' do
       expect(page).to have_content(@application_1.status)
     end
+
+  describe 'searching fo pets for an application' do
+      describe 'an application that has not been submitted' do
+        it 'has a search box to search for pet by name' do
+          click_button 'Submit'
+          
+          expect(page).to have_button('Submit')
+        end
+
+        it 'shows any pet whose name matches the search' do
+          fill_in :search, with: "#{@pet_1.name}"
+          click_button 'Submit'
+
+          expect(page).to have_content(@pet_1.name)
+        end
+      end
+    end
   end
 end
