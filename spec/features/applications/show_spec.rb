@@ -84,7 +84,19 @@ RSpec.describe 'Application Show Page' do
 
           expect(page).to have_content(@pet_8.name)
         end
+      end
+    end
 
+    describe 'submit an application' do
+      describe 'at least one pet added' do
+        it 'has a section to submit the application' do
+          fill_in :search, with: "#{@pet_8.name}"
+          click_button 'Submit'
+          click_button "Adopt #{@pet_8.name}"
+
+          expect(page).to have_content('Why I would make a good owner:')
+
+        end
       end
     end
   end
