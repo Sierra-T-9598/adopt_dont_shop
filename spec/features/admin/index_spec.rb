@@ -24,9 +24,9 @@ RSpec.describe 'Admin Shelters Index', type: :feature do
     application_1 = Application.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Huge backyard', status: 'Pending')
     application_1.pets << @pet_1
     visit '/admin/shelters'
-    save_and_open_page
-    within("section#pending") do
-      expect(page).to have_content([@shelter_1.name])
+    
+    within("#pending") do
+      expect(page).to have_content(@shelter_1.name)
     end
 
   end
