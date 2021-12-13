@@ -129,6 +129,18 @@ RSpec.describe 'Application Show Page' do
           end
         end
       end
+
+      describe 'partial matches for pet names' do
+        describe 'search for pets by pet name' do
+          it 'lists any pet whose name partially matches' do
+            visit "/applications/#{@application_1.id}"
+            fill_in 'Search', with: "rus"
+            click_button 'Submit'
+
+            expect(page).to have_content("#{@pet_3.name}")
+          end
+        end
+      end
     end
   end
 end
