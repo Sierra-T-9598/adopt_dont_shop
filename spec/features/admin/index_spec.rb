@@ -19,4 +19,13 @@ RSpec.describe 'Admin Shelters Index', type: :feature do
     expect(@shelter_2.name).to appear_before(@shelter_3.name)
     expect(@shelter_1.name).to_not appear_before(@shelter_3.name)
   end
+
+  xit 'displays a section for shelters with pending applications' do
+    visit '/admin/shelters'
+
+    within("#pending-apps") do
+      expect(page).to have_content(@shelter_1)
+    end
+
+  end
 end
