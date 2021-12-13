@@ -48,17 +48,11 @@ RSpec.describe Shelter, type: :model do
       end
     end
 
-    describe '#pending_apps' do
+    describe '::pending_apps' do
       it 'returns the shelters that have pending applications' do
-        application_1 = Application.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501')
-        application_1 << @pet_1
-        visit "/applications/#{application_1.id}"
-        fill_in :search, with: "#{@pet_1.name}"
-        click_button 'Submit'
-        click_button "Adopt #{@pet_1.name}"
-        fill_in :description, with: 'Big, fenced backyard.'
-        click_button('Submit your application')
-        
+        application_1 = Application.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Huge backyard', status: 'Pending')
+        application_1.pets << @pet_1
+
         expect(Shelter.pending_apps).to eq([@shelter_1])
       end
     end
