@@ -21,10 +21,18 @@ RSpec.describe 'Admin Shelters Index', type: :feature do
   end
 
   xit 'displays a section for shelters with pending applications' do
+    application_1 = Application.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501')
+    application_1 << @pet_1
+    visit "/applications/#{application_1.id}"
+    fill_in :search, with: "#{@pet_1.name}"
+    click_button 'Submit'
+    click_button "Adopt #{@pet_1.name}"
+    fill_in :description, with: 'Big, fenced backyard.'
+    click_button('Submit your application')
     visit '/admin/shelters'
 
     within("#pending-apps") do
-      expect(page).to have_content(@shelter_1)
+      expect(page).to have_content([@shelter_1.name])
     end
 
   end
