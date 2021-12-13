@@ -19,4 +19,15 @@ RSpec.describe 'Admin Shelters Index', type: :feature do
     expect(@shelter_2.name).to appear_before(@shelter_3.name)
     expect(@shelter_1.name).to_not appear_before(@shelter_3.name)
   end
+
+  it 'displays a section for shelters with pending applications' do
+    application_1 = Application.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Huge backyard', status: 'Pending')
+    application_1.pets << @pet_1
+    visit '/admin/shelters'
+    
+    within("#pending") do
+      expect(page).to have_content(@shelter_1.name)
+    end
+
+  end
 end
