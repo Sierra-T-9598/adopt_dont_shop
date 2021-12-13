@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get '/', to: 'application#welcome'
 
+  # scope :admin do
+  #   resources :shelters, :applications
+  # end
   get '/admin/shelters', to: 'admin#index'
 
   get '/shelters', to: 'shelters#index'

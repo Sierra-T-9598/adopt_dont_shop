@@ -14,8 +14,9 @@ RSpec.describe 'Admin Shelters Index', type: :feature do
 
   it 'displays all shelters in the system in reverse alphabetical order' do
     visit '/admin/shelters'
-    expect(@shelter_2).to appear_before(@shelter_1)
-    expect(@shelter_2).to appear_before(@shelter_3)
-    expect(@shelter_1).to_not appear_before(@shelter_3)
+
+    expect(@shelter_2.name).to appear_before(@shelter_1.name)
+    expect(@shelter_2.name).to appear_before(@shelter_3.name)
+    expect(@shelter_1.name).to_not appear_before(@shelter_3.name)
   end
 end
