@@ -34,10 +34,12 @@ RSpec.describe 'Application Show Page' do
       @application_1.pets << @pet_1
       @application_1.pets << @pet_2
       visit "/applications/#{@application_1.id}"
-      expect(page).to have_content(@pet_1.name)
-      expect(page).to have_content(@pet_2.name)
-      expect(page).to_not have_content(@pet_3.name)
-      expect(page).to_not have_content(@pet_4.name)
+      within('#pets') do
+        expect(page).to have_content(@pet_1.name)
+        expect(page).to have_content(@pet_2.name)
+        expect(page).to_not have_content(@pet_3.name)
+        expect(page).to_not have_content(@pet_4.name)
+      end 
     end
 
     it 'links each pet on the application to its show page' do
@@ -86,20 +88,13 @@ RSpec.describe 'Application Show Page' do
         end
 
         it 'can list the pets wanted for adoption' do
-
-          # within("section#application_pet-#{@application_1.id}") do
-          #   fill_in :search, with: "#{@pet_8.name}"
-          #   click_button 'Submit'
-          #
-          #   click_button "Adopt #{@pet_8.name}"
-          #   expect(page).to have_content(@pet_8.name)
-          # end
           visit "/applications/#{@application_1.id}"
           fill_in :search, with: "#{@pet_8.name}"
           click_button 'Submit'
           click_button "Adopt #{@pet_8.name}"
-          expect(page).to have_content(@pet_8.name)
-
+          within('#pets') do
+            expect(page).to have_content(@pet_8.name)
+          end
         end
       end
     end
