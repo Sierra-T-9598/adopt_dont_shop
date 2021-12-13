@@ -9,10 +9,10 @@ RSpec.describe 'Application Show Page' do
       @pet_3 = Pet.create!(adoptable: true, age: 7, breed: 'chicken', name: 'Rusty', shelter_id: @shelter.id)
       @pet_4 = Pet.create!(adoptable: true, age: 2, breed: 'dalmatian', name: 'Spot', shelter_id: @shelter.id)
       @pet_8 = Pet.create!(adoptable: true, age: 2, breed: 'kitten', name: 'Benny', shelter_id: @shelter.id)
-      @application_1 = @pet_1.applications.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', status: 'In Progress')
+      @application_1 = @pet_1.applications.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501')
       @application_1.pets << @pet_2
-      @application_2 = @pet_1.applications.create!(applicant_name: 'Maximus G', street_address: '13 Tulip Ave', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Work from home.', status: 'In Progress')
-      @application_3 = @pet_2.applications.create!(applicant_name: 'Gerald F', street_address: '1775 Spencer Street', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'Dog lover.', status: 'In Progress')
+      @application_2 = @pet_1.applications.create!(applicant_name: 'Maximus G', street_address: '13 Tulip Ave', city: 'Longmont', state: 'Colorado', zip_code: '80501')
+      @application_3 = @pet_2.applications.create!(applicant_name: 'Gerald F', street_address: '1775 Spencer Street', city: 'Longmont', state: 'Colorado', zip_code: '80501')
       visit "/applications/#{@application_1.id}"
     end
 
@@ -28,10 +28,6 @@ RSpec.describe 'Application Show Page' do
       expect(page).to have_content(@application_1.zip_code)
 
       expect(page).to_not have_content(@application_2.street_address)
-    end
-
-    it 'has a description for why the applicant says they are a good home' do
-      expect(page).to_not have_content(@application_2.description)
     end
 
     it 'lists the names of all pets that the application is for' do
@@ -77,14 +73,37 @@ RSpec.describe 'Application Show Page' do
         end
 
         it 'can list the pets wanted for adoption' do
+
+          # within("section#application_pet-#{@application_1.id}") do
+          #   fill_in :search, with: "#{@pet_8.name}"
+          #   click_button 'Submit'
+          #
+          #   click_button "Adopt #{@pet_8.name}"
+          #   expect(page).to have_content(@pet_8.name)
+          # end
+
           fill_in :search, with: "#{@pet_8.name}"
           click_button 'Submit'
-
           click_button "Adopt #{@pet_8.name}"
-
           expect(page).to have_content(@pet_8.name)
-        end
 
+        end
+      end
+    end
+
+    describe 'submit an application' do
+      describe 'at least one pet added' do
+        it 'submits an application once description is written' do
+          expect(page).to have_button('Submit your application')
+
+          fill_in :description, with: 'Big, fenced backyard.'
+          click_button('Submit your application')
+
+          expect(page).to have_content(@application_1.description)
+          expect(page).to have_content('Pending')
+          # expect(page).to_not have_button('Submit your application')
+          expect(current_path).to eq("/applications/#{@application_1.id}")
+        end
       end
     end
   end

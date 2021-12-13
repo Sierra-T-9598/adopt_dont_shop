@@ -4,19 +4,25 @@
   <%=@application.state%>, <%=@application.zip_code%> </span></p>
 <p>Description: <%=@application.description%></p>
 
-<h2>Application Status: <%=@application.status%></h2>
 
 <p>Pets being applied for:</p>
-  <%@application.pets.each do |pet|%>
+  <%@pets.each do |pet|%>
     <p><%= link_to "#{pet.name}", "pets/#{pet.id}" %></p>
   <% end %>
 
 <br>
 
 <% unless @application.status == "Pending" %>
-  <%= render 'adding_pets' %>
+  <%= render 'searching_pets' %>
 <% end %>
 
 <% if !@pet_search.nil? then %>
-    <%= render 'search' %>
+    <%= render 'search_result' %>
 <% end %>
+
+<% if @pets.length > 0 %>
+  <%= render 'description' %>
+<% end %>
+
+
+<h2>Application Status: <%=@application.status%></h2>
