@@ -1,0 +1,44 @@
+<h1>Application for <%=@application.applicant_name%> </h1>
+<p>Name: <%=@application.applicant_name%></p>
+<p>Full address: <span> <%=@application.street_address%>, <%=@application.city%>,
+  <%=@application.state%>, <%=@application.zip_code%> </span></p>
+<p>Description: <%=@application.description%></p>
+
+<section id="pets"
+<p>Pets being applied for:</p>
+  <%@pets.each do |pet|%>
+    <p><%= link_to "#{pet.name}", "pets/#{pet.id}" %></p>
+  <% end %>
+</section>
+
+<% if @application.status == "Pending" %>
+  <% @application.pet_applications.each do |pet_application| %>
+    <% unless pet_application.application_status == "Approved" %>
+      <%= button_to "Approve application for #{pet_application.pet.name}", "/admin/applications/#{pet_application.id}", method: :patch, params: {application_status: "Approved"} %>
+    <% end %>
+      <%= "#{pet_application.pet.name}: #{pet_application.application_status}" %>
+  <% end %>
+<% end %>
+
+
+<% if @approved_pets != nil && @approved_pets.length > 0 %>
+  <% @approved_pets.each do |pet| %>
+    <p>Approved Pets: <%= pet.name %></p>
+  <% end %>
+<% end %>
+
+<br>
+
+<% unless @application.status == "Pending" %>
+  <%= render 'searching_pets' %>
+<% end %>
+
+<% if !@pet_search.nil? then %>
+    <%= render 'search_result' %>
+<% end %>
+
+<% if @pets.length > 0 %>
+  <%= render 'description' %>
+<% end %>
+
+<h2>Application Status: <%=@application.status%></h2>

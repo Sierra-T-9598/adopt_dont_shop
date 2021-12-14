@@ -5,7 +5,7 @@ class Application < ApplicationRecord
   validates_presence_of :state
   validates_presence_of :zip_code
   validates :description, presence: true, on: :update
-  # validates_presence_of :status
+  validates_presence_of :status
   has_many :pet_applications
   has_many :pets, through: :pet_applications
 end
