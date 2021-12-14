@@ -10,7 +10,7 @@
     <%= render 'search_result' %>
 <% end %>
 
-<% if @pets.length > 0 %>
+<% unless @pets.length == 0 || @application.status == "Pending" %>
   <%= render 'description' %>
 <% end %>
 
