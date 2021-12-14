@@ -17,55 +17,83 @@ RSpec.describe 'Admin application show page' do
     @pet_app_3 = PetApplication.create(pet_id: @pet_2.id, application_id: @application_3.id)
   end
 
+  describe 'applicant details' do
+    it 'displays the application info' do
+      visit "/admin/applications/#{@application_1.id}"
+      within('#application_info') do
+        expect(page).to have_content(@application_1.applicant_name)
+        expect(page).to have_content(@application_1.street_address)
+        expect(page).to have_content(@application_1.description)
+        expect(page).to have_content(@pet_4.name)
+        expect(page).to have_content(@pet_8.name)
+      end
+    end
+  end
+
   describe 'approving a pet for adoption' do
     it 'has a button to approve each pet on the application' do
       visit "/admin/applications/#{@application_1.id}"
-      expect(page).to have_button("Approve application for #{@pet_4.name}")
-      expect(page).to have_button("Approve application for #{@pet_8.name}")
+
+      within("#decision-#{@application_1.id}") do
+        expect(page).to have_button("Approve application for #{@pet_4.name}")
+        expect(page).to have_button("Approve application for #{@pet_8.name}")
+      end
     end
 
     it 'indicates which pets have been approved' do
       visit "/admin/applications/#{@application_1.id}"
-      click_button "Approve application for #{@pet_4.name}"
-      expect(current_path).to eq("/admin/applications/#{@application_1.id}")
-      expect(page).to_not have_button("Approve application for #{@pet_4.name}")
-      expect(page).to have_button("Approve application for #{@pet_8.name}")
-      expect(page).to have_content("#{@pet_4.name}: Approved")
+      within("#decision-#{@application_1.id}") do
+        click_button "Approve application for #{@pet_4.name}"
+        expect(current_path).to eq("/admin/applications/#{@application_1.id}")
+        expect(page).to_not have_button("Approve application for #{@pet_4.name}")
+        expect(page).to have_button("Approve application for #{@pet_8.name}")
+        expect(page).to have_content("#{@pet_4.name}: Approved")
+      end
     end
   end
 
   describe 'rejecting a pet for adoption' do
     it 'has a button to reject each pet on the application ' do
       visit "/admin/applications/#{@application_1.id}"
-      expect(page).to have_button("Reject application for #{@pet_4.name}")
-      expect(page).to have_button("Reject application for #{@pet_8.name}")
+
+      within("#decision-#{@application_1.id}") do
+        expect(page).to have_button("Reject application for #{@pet_4.name}")
+        expect(page).to have_button("Reject application for #{@pet_8.name}")
+      end
     end
 
     it 'indicates which pets have been rejected' do
       visit "/admin/applications/#{@application_1.id}"
-      click_button "Reject application for #{@pet_4.name}"
-      expect(current_path).to eq("/admin/applications/#{@application_1.id}")
-      expect(page).to_not have_button("Reject application for #{@pet_4.name}")
-      expect(page).to_not have_button("Approve application for #{@pet_4.name}")
-      expect(page).to have_button("Reject application for #{@pet_8.name}")
-      expect(page).to have_button("Approve application for #{@pet_8.name}")
-      expect(page).to have_content("#{@pet_4.name}: Rejected")
+
+      within("#decision-#{@application_1.id}") do
+        click_button "Reject application for #{@pet_4.name}"
+        expect(current_path).to eq("/admin/applications/#{@application_1.id}")
+        expect(page).to_not have_button("Reject application for #{@pet_4.name}")
+        expect(page).to_not have_button("Approve application for #{@pet_4.name}")
+        expect(page).to have_button("Reject application for #{@pet_8.name}")
+        expect(page).to have_button("Approve application for #{@pet_8.name}")
+        expect(page).to have_content("#{@pet_4.name}: Rejected")
+      end
     end
   end
 
   describe 'approved or rejected pets on one application to not affect other applications' do
     it 'does not matter if there are two applications for the same pet' do
       visit "/admin/applications/#{@application_1.id}"
-      click_button "Reject application for #{@pet_4.name}"
-      expect(current_path).to eq("/admin/applications/#{@application_1.id}")
-      expect(page).to_not have_button("Reject application for #{@pet_4.name}")
-      expect(page).to_not have_button("Approve application for #{@pet_4.name}")
-      expect(page).to have_content("#{@pet_4.name}: Rejected")
+      within("#decision-#{@application_1.id}") do
+        click_button "Reject application for #{@pet_4.name}"
+        expect(current_path).to eq("/admin/applications/#{@application_1.id}")
+        expect(page).to_not have_button("Reject application for #{@pet_4.name}")
+        expect(page).to_not have_button("Approve application for #{@pet_4.name}")
+        expect(page).to have_content("#{@pet_4.name}: Rejected")
+      end
 
       visit "/admin/applications/#{@application_2.id}"
-      expect(current_path).to eq("/admin/applications/#{@application_2.id}")
-      expect(page).to have_button("Reject application for #{@pet_4.name}")
-      expect(page).to have_button("Approve application for #{@pet_4.name}")
+      within("#decision-#{@application_2.id}") do
+        expect(current_path).to eq("/admin/applications/#{@application_2.id}")
+        expect(page).to have_button("Reject application for #{@pet_4.name}")
+        expect(page).to have_button("Approve application for #{@pet_4.name}")
+      end
     end
   end
 end

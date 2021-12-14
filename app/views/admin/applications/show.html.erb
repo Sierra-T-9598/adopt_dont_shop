@@ -1,5 +1,8 @@
+<section id='application_info'>
 <%= render 'layouts/application_info' %>
+</section>
 
+<section id='decision-<%= @application.id %>'>
 <% if @application.status == "Pending" %>
   <% @application.pet_applications.each do |pet_application| %>
     <% unless pet_application.application_status == "Approved" || pet_application.application_status == "Rejected" %>
@@ -9,7 +12,9 @@
       <p><%= "#{pet_application.pet.name}: #{pet_application.application_status}" %></p>
   <% end %>
 <% end %>
-
+</section>
 <br>
 
+<section id='application_status'>
 <h2>Application Status: <%=@application.status%></h2>
+</section>
