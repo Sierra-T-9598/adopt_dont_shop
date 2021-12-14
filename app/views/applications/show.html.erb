@@ -1,17 +1,25 @@
-<%= render 'layouts/application_info' %>
+<section id="application_info">
+<%= render 'layouts/application_info' %><br>
+</section>
 
-<br>
-
+<section id='search_pets'>
 <% unless @application.status == "Pending" %>
   <%= render 'searching_pets' %>
 <% end %>
+</section>
 
+<section id='result'>
 <% if !@pet_search.nil? then %>
-    <%= render 'search_result' %>
+  <%= render 'search_result' %>
 <% end %>
+</section>
 
+<section id='submit_with_description'>
 <% unless @pets.length == 0 || @application.status == "Pending" %>
   <%= render 'description' %>
 <% end %>
+</section>
 
+<section id='application_status'
 <h2>Application Status: <%=@application.status%></h2>
+</section>
