@@ -43,7 +43,7 @@ RSpec.describe 'Admin application show page' do
 
     it 'indicates which pets have been rejected' do
       visit "/admin/applications/#{@application_1.id}"
-      click_button "Approve application for #{@pet_4.name}"
+      click_button "Reject application for #{@pet_4.name}"
       expect(current_path).to eq("/admin/applications/#{@application_1.id}")
       expect(page).to_not have_button("Reject application for #{@pet_4.name}")
       expect(page).to_not have_button("Approve application for #{@pet_4.name}")
