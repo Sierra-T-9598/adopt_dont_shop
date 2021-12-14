@@ -2,10 +2,6 @@ class Admin::ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
     @pets = @application.pets
-    @approved_pets = []
-    if params.include?(:pet_id)
-      @approved_pets << Pet.find(params[:pet_id])
-    end
   end
 
   def update
