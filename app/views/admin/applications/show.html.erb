@@ -11,6 +11,22 @@
   <% end %>
 </section>
 
+<% if @application.status == "Pending" %>
+  <% @application.pet_applications.each do |pet_application| %>
+    <% unless pet_application.application_status == "Approved" %>
+      <%= button_to "Approve application for #{pet_application.pet.name}", "/admin/applications/#{pet_application.id}", method: :patch, params: {application_status: "Approved"} %>
+    <% end %>
+      <%= "#{pet_application.pet.name}: #{pet_application.application_status}" %>
+  <% end %>
+<% end %>
+
+
+<% if @approved_pets != nil && @approved_pets.length > 0 %>
+  <% @approved_pets.each do |pet| %>
+    <p>Approved Pets: <%= pet.name %></p>
+  <% end %>
+<% end %>
+
 <br>
 
 <% unless @application.status == "Pending" %>

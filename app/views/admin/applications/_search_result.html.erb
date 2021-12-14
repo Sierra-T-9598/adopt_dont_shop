@@ -1,0 +1,5 @@
+<section id="application_pet-<%=@application.id%>">
+<% @pet_search.each do |pet| %>
+  <%= pet.name %> <%= button_to "Adopt #{pet.name}", '/pet_applications', method: :patch, local: true, params: {application: @application, pet: pet}  %>
+<% end %>
+</section>
