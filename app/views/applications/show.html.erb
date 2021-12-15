@@ -4,7 +4,8 @@
 
 <section id='search_pets'>
 <% unless @application.status == "Pending" %>
-  <%= render 'searching_pets' %>
+  <h2>Add a pet to this Application:</h2>
+  <%= render partial: 'layouts/search_form', locals: {url: "/applications/#{@application.id}", method: :get, button_text: "Submit" } %>
 <% end %>
 </section>
 
