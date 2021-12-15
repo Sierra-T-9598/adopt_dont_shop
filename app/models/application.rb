@@ -8,4 +8,17 @@ class Application < ApplicationRecord
   validates_presence_of :status
   has_many :pet_applications
   has_many :pets, through: :pet_applications
+
+  def change_status
+    state = []
+    pet_applications.each do |app|
+      state << app.application_status
+    end
+
+    if state.include?("Rejected")
+      self.status = "Rejected"
+    else
+      self.status = "Approved"
+    end
+  end
 end

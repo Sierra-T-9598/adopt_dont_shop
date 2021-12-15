@@ -11,6 +11,7 @@
     <% end %>
       <p><%= "#{pet_application.pet.name}: #{pet_application.application_status}" %></p>
   <% end %>
+  <% @application.change_status %>
 <% end %>
 </section>
 <br>
