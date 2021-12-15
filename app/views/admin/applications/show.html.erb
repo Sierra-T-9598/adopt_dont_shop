@@ -16,6 +16,18 @@
 </section>
 <br>
 
+<% if @application.status == "Approved" %>
+  <% @application.pets.each do |pet| %>
+    <% pet.approved_adoption_status %>
+  <% end %>
+<% end %>
+
+<% if @application.status == "Rejected" %>
+  <% @application.pets.each do |pet| %>
+    <% pet.rejected_adoption_status %>
+  <% end %>
+<% end %>
+
 <section id='application_status'>
 <h2>Application Status: <%=@application.status%></h2>
 </section>

@@ -121,8 +121,26 @@ RSpec.describe 'Admin application show page', type: :feature do
         within('#application_status') do
           expect(page).to have_content("Rejected")
         end
-        save_and_open_page
+
         expect(current_path).to eq("/admin/applications/#{@application_1.id}")
+      end
+
+      it 'makes pets on approved applications no longer adoptable' do
+        visit "/admin/applications/#{@application_1.id}"
+        within("#decision-#{@application_1.id}") do
+          click_button "Approve application for #{@pet_4.name}"
+          click_button "Approve application for #{@pet_8.name}"
+        end
+
+        visit "/pets/#{@pet_4.id}"
+        within("#pet-#{@pet_4.id}") do
+          expect(page).to have_content(false)
+        end
+
+        visit "/pets/#{@pet_8.id}"
+        within("#pet-#{@pet_8.id}") do
+          expect(page).to have_content(false)
+        end
       end
     end
   end
