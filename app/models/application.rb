@@ -9,7 +9,16 @@ class Application < ApplicationRecord
   has_many :pet_applications
   has_many :pets, through: :pet_applications
 
-  def find_by_pet_application(pet)
-    self.pet_applications.find_by(pet: pet)
+  def change_status
+    state = []
+    pet_applications.each do |app|
+      state << app.application_status
+    end
+
+    if state.include?("Rejected")
+      self.status = "Rejected"
+    else
+      self.status = "Approved"
+    end
   end
 end

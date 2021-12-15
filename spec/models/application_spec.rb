@@ -27,15 +27,20 @@ RSpec.describe Application, type: :model do
       @application_1 = Application.create!(applicant_name: Faker::Name.name, street_address: '131 Seward Lane', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'I love animals!', status: "Pending")
       @application_2 = Application.create!(applicant_name: 'Maximus G', street_address: '13 Tulip Ave', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'I love animals!', status: "Pending")
       @application_3 = Application.create!(applicant_name: 'Gerald F', street_address: '1775 Spencer Street', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'I love animals!', status: "In Progress")
-      @pet_app_1 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_1.id)
-      @pet_app_2 = PetApplication.create(pet_id: @pet_8.id, application_id: @application_1.id)
+      @pet_app_1 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_1.id, application_status: "Approved")
+      @pet_app_2 = PetApplication.create(pet_id: @pet_8.id, application_id: @application_1.id, application_status: "Approved")
       @pet_app_3 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_2.id)
-      @pet_app_4 = PetApplication.create(pet_id: @pet_2.id, application_id: @application_3.id)
+      @pet_app_4 = PetApplication.create(pet_id: @pet_2.id, application_id: @application_3.id, application_status: "Approved")
+      @pet_app_5 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_3.id, application_status: "Rejected")
     end
 
-    describe '::find_by_pet_application' do
-      it 'locates a particular application by the pet that it is for' do
-        expect(@application_1.find_by_pet_application(@pet_4)).to eq(@pet_app_1)
+    describe '#change_status' do
+      it 'updates the application status after admin decisions' do
+        @application_1.change_status
+        @application_3.change_status
+
+        expect(@application_1.status).to eq("Approved")
+        expect(@application_3.status).to eq("Rejected")
       end
     end
   end

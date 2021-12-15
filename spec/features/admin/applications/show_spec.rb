@@ -110,6 +110,20 @@ RSpec.describe 'Admin application show page', type: :feature do
 
         expect(current_path).to eq("/admin/applications/#{@application_1.id}")
       end
+
+      it 'has one or more pets rejected on an application' do
+        visit "/admin/applications/#{@application_1.id}"
+        within("#decision-#{@application_1.id}") do
+          click_button "Reject application for #{@pet_4.name}"
+          click_button "Approve application for #{@pet_8.name}"
+        end
+
+        within('#application_status') do
+          expect(page).to have_content("Rejected")
+        end
+        save_and_open_page
+        expect(current_path).to eq("/admin/applications/#{@application_1.id}")
+      end
     end
-   end
+  end
 end
