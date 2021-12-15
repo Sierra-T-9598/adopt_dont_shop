@@ -8,4 +8,8 @@ class Application < ApplicationRecord
   validates_presence_of :status
   has_many :pet_applications
   has_many :pets, through: :pet_applications
+
+  def find_by_pet_application(pet)
+    self.pet_applications.find_by(pet: pet)
+  end
 end

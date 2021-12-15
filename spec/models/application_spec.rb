@@ -16,7 +16,7 @@ RSpec.describe Application, type: :model do
     it { should validate_presence_of(:status) }
   end
 
-  describe 'class methods' do
+  describe 'instance methods' do
     before(:each) do
       @shelter = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
       @pet_1 = Pet.create!(adoptable: true, age: 1, breed: 'sphynx', name: 'Lucille Bald', shelter_id: @shelter.id)
@@ -28,14 +28,14 @@ RSpec.describe Application, type: :model do
       @application_2 = Application.create!(applicant_name: 'Maximus G', street_address: '13 Tulip Ave', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'I love animals!', status: "Pending")
       @application_3 = Application.create!(applicant_name: 'Gerald F', street_address: '1775 Spencer Street', city: 'Longmont', state: 'Colorado', zip_code: '80501', description: 'I love animals!', status: "In Progress")
       @pet_app_1 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_1.id)
-      @pet_app_1 = PetApplication.create(pet_id: @pet_8.id, application_id: @application_1.id)
-      @pet_app_2 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_2.id)
-      @pet_app_3 = PetApplication.create(pet_id: @pet_2.id, application_id: @application_3.id)
+      @pet_app_2 = PetApplication.create(pet_id: @pet_8.id, application_id: @application_1.id)
+      @pet_app_3 = PetApplication.create(pet_id: @pet_4.id, application_id: @application_2.id)
+      @pet_app_4 = PetApplication.create(pet_id: @pet_2.id, application_id: @application_3.id)
     end
 
     describe '::find_by_pet_application' do
       it 'locates a particular application by the pet that it is for' do
-        expect(Application.find_by_pet_application(@pet_4)).to eq(@pet_app_1)
+        expect(@application_1.find_by_pet_application(@pet_4)).to eq(@pet_app_1)
       end
     end
   end
