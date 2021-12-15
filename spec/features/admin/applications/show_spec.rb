@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Admin application show page' do
+RSpec.describe 'Admin application show page', type: :feature do
   before(:each) do
     @shelter = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
     @pet_1 = Pet.create!(adoptable: true, age: 1, breed: 'sphynx', name: 'Lucille Bald', shelter_id: @shelter.id)
@@ -107,6 +107,8 @@ RSpec.describe 'Admin application show page' do
         within('#application_status') do
           expect(page).to have_content("Approved")
         end
+
+        expect(current_path).to eq("/admin/applications/#{@application_1.id}")
       end
     end
    end

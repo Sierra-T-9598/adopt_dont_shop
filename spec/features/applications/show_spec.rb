@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Application Show Page' do
+RSpec.describe 'Application Show Page', type: :feature do
   describe 'When visiting the applicaiton show page' do
     before(:each) do
       @shelter = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
